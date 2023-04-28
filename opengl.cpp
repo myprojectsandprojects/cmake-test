@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include "opengl.h"
 
-
 GLuint make_shader(const char *VertexSrc, const char *FragmentSrc, const char *GeometrySrc/* = NULL*/)
 {
 	int success;
@@ -66,4 +65,35 @@ void pass_to_shader(GLuint Shader, const char *Name, float Value)
 {
 	GLint UniformLocation = glGetUniformLocation(Shader, Name);
 	glUniform1f(UniformLocation, Value);
+}
+
+GLuint make_color_shader()
+{
+	const char *VertexShader = R"(
+		#version 330 core
+		
+		layout(location = 0) in vec3 Position;
+		layout(location = 1) in vec4 vColor;
+		
+		out vec4 fColor;
+		
+		void main()
+		{
+			gl_Position = vec4(Position, 1.0);
+			fColor = vColor;
+		}
+	)";
+	const char *FragmentShader = R"(
+		#version 330 core
+		
+		in vec4 fColor;
+		out vec4 Color;
+		
+		void main()
+		{
+			Color = fColor;
+//			Color = vec4(0.0, 0.0, 1.0, 1.0);
+		}
+	)";
+	return make_shader(VertexShader, FragmentShader);
 }

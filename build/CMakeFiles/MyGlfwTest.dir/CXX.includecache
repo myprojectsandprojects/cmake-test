@@ -73,6 +73,8 @@ GLFW/glfw3.h
 -
 opengl.h
 /home/eero/all/no-gtk-text-editor/test/cmake-test/opengl.h
+opengl.h
+/home/eero/all/no-gtk-text-editor/test/cmake-test/opengl.h
 
 /home/eero/all/no-gtk-text-editor/test/cmake-test/opengl.cpp
 stdio.h

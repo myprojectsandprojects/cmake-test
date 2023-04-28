@@ -6,13 +6,7 @@
 
 #include "opengl.h"
 
-
-struct color
-{
-	float R, G, B, A;
-};
-
-void render_triangle(GLuint Shader, color Color);
+GLuint make_color_shader();
 
 int main()
 {
@@ -43,41 +37,15 @@ int main()
 		return 1;
 	}
 
-	const char *VertexShader = R"(
-		#version 330 core
-		
-		layout(location = 0) in vec3 Position;
-		layout(location = 1) in vec4 vColor;
-		
-		out vec4 fColor;
-		
-		void main()
-		{
-			gl_Position = vec4(Position, 1.0);
-			fColor = vColor;
-		}
-	)";
-	const char *FragmentShader = R"(
-		#version 330 core
-		
-		in vec4 fColor;
-		out vec4 Color;
-		
-		void main()
-		{
-			Color = fColor;
-//			Color = vec4(0.0, 0.0, 1.0, 1.0);
-		}
-	)";
-	GLuint Shader = make_shader(VertexShader, FragmentShader);
-
+	GLuint Shader = make_color_shader();
+	
 	while(glfwWindowShouldClose(AppWindow) != true)
 	{
-		glClearColor(0.0f, 1.0f, 1.0f, 1.0f);
+		glClearColor(0.0f, 0.0f, 1.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
 //		color Color = {0.5f, 0.3f, 0.7f, 1.0f};
-		render_triangle(Shader, {0.5f, 0.3f, 0.7f, 1.0f});
+		render_triangle(Shader, {0.0f, 1.0f, 1.0f, 1.0f});
 
 		glfwSwapBuffers(AppWindow);
 
