@@ -97,3 +97,35 @@ GLuint make_color_shader()
 	)";
 	return make_shader(VertexShader, FragmentShader);
 }
+
+GLuint make_texture_shader()
+{
+	const char *VertexShader = R"(
+		#version 330 core
+		
+		layout(location = 0) in vec3 Position;
+		layout(location = 1) in vec2 vTex;
+		
+		out vec2 fTex;
+		
+		void main()
+		{
+			gl_Position = vec4(Position, 1.0);
+			fTex = vTex;
+		}
+	)";
+	const char *FragmentShader = R"(
+		#version 330 core
+		
+		in vec2 fTex;
+		out vec4 Color;
+		
+		uniform sampler2D s;
+		
+		void main()
+		{
+			Color = texture(s, fTex);
+		}
+	)";
+	return make_shader(VertexShader, FragmentShader);
+}

@@ -11,6 +11,7 @@ struct color
 GLuint make_shader(const char *VertexSrc, const char *FragmentSrc, const char *GeometrySrc = NULL);
 void pass_to_shader(GLuint Shader, const char *Name, int Value);
 void pass_to_shader(GLuint Shader, const char *Name, float Value);
-void render_triangle(GLuint Shader, color Color);
+GLuint make_color_shader();
+GLuint make_texture_shader();
 
 #endif

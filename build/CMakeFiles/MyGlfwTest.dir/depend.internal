@@ -11,6 +11,7 @@ CMakeFiles/MyGlfwTest.dir/main.cpp.o
  ../glfw-3.3.8/include/GLFW/glfw3.h
  /home/eero/all/no-gtk-text-editor/test/cmake-test/main.cpp
  /home/eero/all/no-gtk-text-editor/test/cmake-test/opengl.h
+ /home/eero/all/no-gtk-text-editor/test/cmake-test/stb_image.h
 CMakeFiles/MyGlfwTest.dir/opengl.cpp.o
  ../glad/include/KHR/khrplatform.h
  ../glad/include/glad/glad.h

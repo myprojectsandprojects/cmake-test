@@ -10,6 +10,7 @@ CMakeFiles/MyGlfwTest.dir/main.cpp.o: ../glad/include/glad/glad.h
 CMakeFiles/MyGlfwTest.dir/main.cpp.o: ../glfw-3.3.8/include/GLFW/glfw3.h
 CMakeFiles/MyGlfwTest.dir/main.cpp.o: ../main.cpp
 CMakeFiles/MyGlfwTest.dir/main.cpp.o: ../opengl.h
+CMakeFiles/MyGlfwTest.dir/main.cpp.o: ../stb_image.h
 
 CMakeFiles/MyGlfwTest.dir/opengl.cpp.o: ../glad/include/KHR/khrplatform.h
 CMakeFiles/MyGlfwTest.dir/opengl.cpp.o: ../glad/include/glad/glad.h
