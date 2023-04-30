@@ -6,6 +6,8 @@ CMakeFiles/MyGlfwTest.dir/glad/src/glad.c.o
  ../glad/include/glad/glad.h
  /home/eero/all/no-gtk-text-editor/test/cmake-test/glad/src/glad.c
 CMakeFiles/MyGlfwTest.dir/main.cpp.o
+ ../freetype-2.13.0/include/freetype/config/ftheader.h
+ ../freetype-2.13.0/include/ft2build.h
  ../glad/include/KHR/khrplatform.h
  ../glad/include/glad/glad.h
  ../glfw-3.3.8/include/GLFW/glfw3.h

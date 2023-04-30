@@ -6,6 +6,12 @@
 
 #IncludeRegexTransform: 
 
+../freetype-2.13.0/include/freetype/config/ftheader.h
+
+../freetype-2.13.0/include/ft2build.h
+freetype/config/ftheader.h
+-
+
 ../glad/include/KHR/khrplatform.h
 stdint.h
 -
@@ -70,6 +76,8 @@ stdio.h
 glad/glad.h
 -
 GLFW/glfw3.h
+-
+ft2build.h
 -
 stb_image.h
 /home/eero/all/no-gtk-text-editor/test/cmake-test/stb_image.h

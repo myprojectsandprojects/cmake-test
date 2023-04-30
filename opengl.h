@@ -13,5 +13,7 @@ void pass_to_shader(GLuint Shader, const char *Name, int Value);
 void pass_to_shader(GLuint Shader, const char *Name, float Value);
 GLuint make_color_shader();
 GLuint make_texture_shader();
+GLuint make_text_shader();
+GLuint make_SDF_shader();
 
 #endif

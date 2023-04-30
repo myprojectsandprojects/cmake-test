@@ -129,3 +129,100 @@ GLuint make_texture_shader()
 	)";
 	return make_shader(VertexShader, FragmentShader);
 }
+
+GLuint make_SDF_shader()
+{
+	const char *VertexShader = R"(
+		#version 330 core
+		
+		layout(location = 0) in vec3 Position;
+		layout(location = 1) in vec2 vTex;
+		
+		out vec2 fTex;
+		
+		void main()
+		{
+			gl_Position = vec4(Position, 1.0);
+			fTex = vTex;
+		}
+	)";
+	const char *FragmentShader = R"(
+		#version 330 core
+
+		in vec2 fTex;
+		out vec4 Color;
+
+		uniform sampler2D s;
+
+		const float smoothing = 1.0 / 16.0;
+
+		vec4 get_smooth(vec3 Color, float Distance)
+		{
+			return vec4(Color, smoothstep(0.5 - smoothing, 0.5 + smoothing, Distance));
+		}
+
+		vec4 get_smooth_with_background(vec4 Color, vec4 Background, float Distance)
+		{
+			float T = smoothstep(0.5 - smoothing, 0.5 + smoothing, Distance);
+			return mix(Background, Color, T);
+		}
+
+		vec4 get_crisp(vec3 Color, float Distance)
+		{
+			float Alpha = (Distance < 0.5) ? 0.0 : 1.0;
+			return vec4(Color, Alpha);
+		}
+
+		vec4 get_sdf(float Distance)
+		{
+			return vec4(1.0, 1.0, 1.0, Distance);
+		}
+
+		void main()
+		{
+			float Distance = texture(s, fTex).r;
+
+//			Color = get_sdf(Distance);
+//			Color = get_crisp(vec3(1.0, 1.0, 1.0), Distance);
+//			Color = get_smooth(vec3(1.0, 1.0, 1.0), Distance);
+			Color = get_smooth_with_background(vec4(1.0, 0.0, 0.0, 1.0), vec4(0.0, 0.0, 1.0, 1.0), Distance);
+		}
+	)";
+	return make_shader(VertexShader, FragmentShader);
+}
+
+GLuint make_text_shader()
+{
+	const char *VertexShader = R"(
+		#version 330 core
+	
+		layout(location = 0) in vec3 Position;
+		layout(location = 1) in vec2 vTex;
+	
+		out vec2 fTex;
+	
+		void main()
+		{
+			gl_Position = vec4(Position, 1.0);
+			fTex = vTex;
+		}
+	)";
+
+	const char *FragmentShader = R"(
+		#version 330 core
+		
+		in vec2 fTex;
+		
+		out vec4 Color;
+		
+		uniform sampler2D s;
+		
+		void main()
+		{
+			Color = vec4(1.0, 1.0, 1.0, texture(s, fTex).r);
+//			Color = vec4(texture(s, fTex).r, 1.0, 1.0, 1.0);
+		}
+	)";
+
+	return make_shader(VertexShader, FragmentShader);
+}

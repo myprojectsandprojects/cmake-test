@@ -5,6 +5,8 @@ CMakeFiles/MyGlfwTest.dir/glad/src/glad.c.o: ../glad/include/KHR/khrplatform.h
 CMakeFiles/MyGlfwTest.dir/glad/src/glad.c.o: ../glad/include/glad/glad.h
 CMakeFiles/MyGlfwTest.dir/glad/src/glad.c.o: ../glad/src/glad.c
 
+CMakeFiles/MyGlfwTest.dir/main.cpp.o: ../freetype-2.13.0/include/freetype/config/ftheader.h
+CMakeFiles/MyGlfwTest.dir/main.cpp.o: ../freetype-2.13.0/include/ft2build.h
 CMakeFiles/MyGlfwTest.dir/main.cpp.o: ../glad/include/KHR/khrplatform.h
 CMakeFiles/MyGlfwTest.dir/main.cpp.o: ../glad/include/glad/glad.h
 CMakeFiles/MyGlfwTest.dir/main.cpp.o: ../glfw-3.3.8/include/GLFW/glfw3.h
