@@ -16,7 +16,7 @@ void draw_image(GLuint Texture, GLuint Shader);
 float draw_glyph(int X, int Y, float ScaleFactor, FT_Library *Lib, GLuint Shader);
 float draw_glyph_sdf(int X, int Y, float ScaleFactor, FT_Library *Lib, GLuint Shader, FT_Bitmap *Bitmap);
 
-int WindowWidth = 900;
+int WindowWidth = 1200;
 int WindowHeight = 700;
 
 void OnWindowResized(GLFWwindow *Window, int Width, int Height)
@@ -61,7 +61,9 @@ int main()
 
 	FT_Face Face;
 	const char *FontFile = "/home/eero/.local/share/fonts/CascadiaMono.ttf";
-	const int FontSize = 18;
+//	const char *FontFile = "/home/eero/.local/share/fonts/sudo.ttf";
+//	const int FontSize = 24;
+	const int FontSize = 64;
 	FT_Error Error = FT_New_Face(Lib, FontFile, 0, &Face);
 	if(Error != FT_Err_Ok)
 	{
@@ -73,13 +75,14 @@ int main()
 //	FT_Set_Char_Size(face, 0, 16*64, 300, 300);
 	FT_Set_Pixel_Sizes(Face, 0, FontSize);
 
-	Error = FT_Load_Char(Face, 'A', FT_LOAD_RENDER);
+	Error = FT_Load_Char(Face, 'r', FT_LOAD_RENDER);
 	if(Error != FT_Err_Ok)
 	{
 		fprintf(stderr, "FT_Load_Char: Error!\n");
 		exit(1);
 	}
 
+//	FT_Render_Glyph(Face->glyph, FT_RENDER_MODE_MONO);
 	FT_Render_Glyph(Face->glyph, FT_RENDER_MODE_SDF);
 	FT_Bitmap *Bitmap = &Face->glyph->bitmap;
 //	printf("width: %d, rows: %d\n", Bitmap->width, Bitmap->rows);
@@ -104,17 +107,17 @@ int main()
 		float PenX, PenY;
 		PenX = 10.0f;
 		PenY = WindowHeight - 10;
+		PenX += draw_glyph(PenX, PenY, 0.25f, &Lib, TextShader);
+		PenX += draw_glyph(PenX, PenY, 0.5f, &Lib, TextShader);
 		PenX += draw_glyph(PenX, PenY, 1.0f, &Lib, TextShader);
-		PenX += draw_glyph(PenX, PenY, 2.0f, &Lib, TextShader);
 		PenX += draw_glyph(PenX, PenY, 3.0f, &Lib, TextShader);
-		PenX += draw_glyph(PenX, PenY, 4.0f, &Lib, TextShader);
-		PenX += draw_glyph(PenX, PenY, 11.0f, &Lib, TextShader);
+		PenX += draw_glyph(PenX, PenY, 9.0f, &Lib, TextShader);
 
+		PenX += draw_glyph_sdf(PenX, PenY, 0.25f, &Lib, SDFShader, Bitmap);
+		PenX += draw_glyph_sdf(PenX, PenY, 0.5f, &Lib, SDFShader, Bitmap);
 		PenX += draw_glyph_sdf(PenX, PenY, 1.0f, &Lib, SDFShader, Bitmap);
-		PenX += draw_glyph_sdf(PenX, PenY, 2.0f, &Lib, SDFShader, Bitmap);
 		PenX += draw_glyph_sdf(PenX, PenY, 3.0f, &Lib, SDFShader, Bitmap);
-		PenX += draw_glyph_sdf(PenX, PenY, 4.0f, &Lib, SDFShader, Bitmap);
-		PenX += draw_glyph_sdf(PenX, PenY, 11.0f, &Lib, SDFShader, Bitmap);
+		PenX += draw_glyph_sdf(PenX, PenY, 9.0f, &Lib, SDFShader, Bitmap);
 
 		glfwSwapBuffers(AppWindow);
 
@@ -207,7 +210,7 @@ GLuint make_texture(const char *File)
 	int Width, Height, NumChannels;
 	stbi_set_flip_vertically_on_load(true);
 	unsigned char *Data = stbi_load(File, &Width, &Height, &NumChannels, 0);
-	printf("width: %d, height: %d, # channels: %d\n", Width, Height, NumChannels);
+//	printf("width: %d, height: %d, # channels: %d\n", Width, Height, NumChannels);
 
 	GLuint Texture;
 	glGenTextures(1, &Texture);
@@ -315,8 +318,6 @@ float draw_glyph_sdf(int _X, int _Y, float ScaleFactor, FT_Library *Lib, GLuint 
 		Bitmap->buffer                      // data
 		);
 
-	glUseProgram(Shader);
-
 	float XPixels = _X;
 	float YPixels = _Y;
 	float WidthPixels = Bitmap->width * ScaleFactor;
@@ -353,6 +354,9 @@ float draw_glyph_sdf(int _X, int _Y, float ScaleFactor, FT_Library *Lib, GLuint 
 	int VerticesSizeBytes = sizeof(Vertices);
 	int NumVertices = VerticesSizeBytes / 5 * sizeof(float);
 
+	glUseProgram(Shader);
+	pass_to_shader(Shader, "ScaleFactor", ScaleFactor);
+
 	GLuint VAO;
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
@@ -381,7 +385,8 @@ float draw_glyph(int _X, int _Y, float ScaleFactor, FT_Library *Lib, GLuint Shad
 {
 	FT_Face Face;
 	const char *FontFile = "/home/eero/.local/share/fonts/CascadiaMono.ttf";
-	const int FontSize = 18;
+//	const int FontSize = 24;
+	const int FontSize = 64;
 	FT_Error Error = FT_New_Face(*Lib, FontFile, 0, &Face);
 	if(Error != FT_Err_Ok)
 	{
@@ -391,7 +396,7 @@ float draw_glyph(int _X, int _Y, float ScaleFactor, FT_Library *Lib, GLuint Shad
 //	FT_Set_Char_Size(face, 0, 16*64, 300, 300);
 	FT_Set_Pixel_Sizes(Face, 0, FontSize);
 
-	Error = FT_Load_Char(Face, 'A', FT_LOAD_RENDER);
+	Error = FT_Load_Char(Face, 'r', FT_LOAD_RENDER);
 	if(Error != FT_Err_Ok)
 	{
 		fprintf(stderr, "FT_Load_Char: Error!\n");
@@ -413,9 +418,10 @@ float draw_glyph(int _X, int _Y, float ScaleFactor, FT_Library *Lib, GLuint Shad
 //	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
 	// What to do when the texture is minified/magnified:
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 	glTexImage2D(
 		GL_TEXTURE_2D,            // target

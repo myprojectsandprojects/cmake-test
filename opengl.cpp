@@ -152,9 +152,15 @@ GLuint make_SDF_shader()
 		in vec2 fTex;
 		out vec4 Color;
 
+		uniform float ScaleFactor;
+
 		uniform sampler2D s;
 
-		const float smoothing = 1.0 / 16.0;
+//		const float smoothing = 1.0 / 16.0;
+//		float smoothing = 4 * ScaleFactor / 6.0;
+//		float smoothing = 0.25 / (6.0 * ScaleFactor);
+//		float smoothing = 1 / (12.0 * ScaleFactor);
+		float smoothing = 1 / (16.0 * ScaleFactor);
 
 		vec4 get_smooth(vec3 Color, float Distance)
 		{
@@ -184,8 +190,8 @@ GLuint make_SDF_shader()
 
 //			Color = get_sdf(Distance);
 //			Color = get_crisp(vec3(1.0, 1.0, 1.0), Distance);
-//			Color = get_smooth(vec3(1.0, 1.0, 1.0), Distance);
-			Color = get_smooth_with_background(vec4(1.0, 0.0, 0.0, 1.0), vec4(0.0, 0.0, 1.0, 1.0), Distance);
+			Color = get_smooth(vec3(1.0, 1.0, 1.0), Distance);
+//			Color = get_smooth_with_background(vec4(1.0, 0.0, 0.0, 1.0), vec4(0.0, 0.0, 1.0, 1.0), Distance);
 		}
 	)";
 	return make_shader(VertexShader, FragmentShader);
